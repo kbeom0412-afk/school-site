@@ -12,24 +12,29 @@ body {
   background-color:#f5f5f5;
 }
 
-/* 🔥 상단 바 */
+/* 상단 */
 .header {
-  background-color: skyblue;
+  background-color: #4facfe;
   color:white;
   padding:30px;
   font-size:30px;
   font-weight:bold;
 }
 
-/* 내용 박스 */
+/* 🔥 박스 넓게 */
+.container {
+  display:flex;
+  justify-content: space-between;
+  padding:20px;
+  gap:20px;
+}
+
 .box {
   background:white;
   border:1px solid #ddd;
-  margin:20px auto;
   padding:20px;
   border-radius:10px;
-  width:80%;
-  max-width:500px;
+  width:50%;
 }
 
 /* 버튼 */
@@ -37,7 +42,7 @@ button {
   margin:5px;
   padding:10px 15px;
   border:none;
-  background-color: skyblue;
+  background-color: #4facfe;
   color:white;
   font-weight:bold;
   cursor:pointer;
@@ -45,56 +50,80 @@ button {
 }
 
 button:hover {
-  background-color: deepskyblue;
+  background-color: #2c8efc;
+}
+
+/* 날짜 선택 */
+input {
+  padding:8px;
+  margin:10px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🔥 상단 -->
 <div class="header">
-  🏫 욕지중학교
+   욕지중학교
 </div>
 
-<div class="box">
-  <h2>🍱 오늘 급식</h2>
-  <p id="meal">불러오는 중...</p>
-</div>
+<div class="container">
 
-<div class="box">
-  <h2>📚 시간표</h2>
+  <!--  급식 -->
+  <div class="box">
+    <h2> 급식</h2>
 
-  <button onclick="showGrade(1)">1학년</button>
-  <button onclick="showGrade(2)">2학년</button>
-  <button onclick="showGrade(3)">3학년</button>
+    <!-- 날짜 선택 -->
+    <input type="date" id="datePicker">
+    <br>
 
-  <div id="timetable">
-    <p>학년을 선택하세요</p>
+    <button onclick="getMeal()">조회</button>
+
+    <p id="meal">날짜를 선택하세요</p>
   </div>
+
+  <!--  시간표 -->
+  <div class="box">
+    <h2> 시간표</h2>
+
+    <button onclick="showGrade(1)">1학년</button>
+    <button onclick="showGrade(2)">2학년</button>
+    <button onclick="showGrade(3)">3학년</button>
+
+    <div id="timetable">
+      <p>학년을 선택하세요</p>
+    </div>
+  </div>
+
 </div>
 
 <script>
 const API_KEY = "98d97eced24247d1bbdbedde114d3df7";
 
-const today = new Date();
-const y = today.getFullYear();
-const m = String(today.getMonth()+1).padStart(2,'0');
-const d = String(today.getDate()).padStart(2,'0');
+//  급식 가져오기
+function getMeal() {
+  const selected = document.getElementById("datePicker").value;
 
-const date = `${y}${m}${d}`;
-
-fetch(`https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${API_KEY}&Type=json&pIndex=1&pSize=10&ATPT_OFCDC_SC_CODE=G10&SD_SCHUL_CODE=9010438&MLSV_YMD=${date}`)
-.then(res => res.json())
-.then(data => {
-  try {
-    let meal = data.mealServiceDietInfo[1].row[0].DDISH_NM;
-    document.getElementById("meal").innerHTML = meal.replace(/<br\/>/g,"<br>");
-  } catch {
-    document.getElementById("meal").innerText = "급식 없음";
+  if (!selected) {
+    alert("날짜를 선택하세요!");
+    return;
   }
-});
 
+  const date = selected.replace(/-/g,"");
+
+  fetch(`https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${API_KEY}&Type=json&pIndex=1&pSize=10&ATPT_OFCDC_SC_CODE=G10&SD_SCHUL_CODE=9010438&MLSV_YMD=${date}`)
+  .then(res => res.json())
+  .then(data => {
+    try {
+      let meal = data.mealServiceDietInfo[1].row[0].DDISH_NM;
+      document.getElementById("meal").innerHTML = meal.replace(/<br\/>/g,"<br>");
+    } catch {
+      document.getElementById("meal").innerText = "급식 없음";
+    }
+  });
+}
+
+//  시간표
 const schedules = {
   1: ["국어", "수학", "영어", "과학", "체육"],
   2: ["영어", "과학", "수학", "국어", "미술"],
