@@ -91,7 +91,7 @@ button {
 
 <header>욕지중학교</header>
 
-<!-- 🍱 급식 -->
+<!--  급식 -->
 <div class="box">
   <h2>급식</h2>
 
@@ -104,7 +104,7 @@ button {
   <p id="meal">불러오는 중...</p>
 </div>
 
-<!-- 📚 시간표 -->
+<!--  시간표 -->
 <div class="box">
   <h2>시간표</h2>
 
@@ -116,7 +116,7 @@ button {
 </div>
 
 <script>
-const API_KEY = "여기에_너의_키";
+const API_KEY = "3c229af746fa442eaf1240398ed7a9b5";
 
 // 날짜
 let currentDate = new Date();
@@ -153,7 +153,7 @@ function getMeal() {
         document.getElementById("meal").innerHTML =
           meal.replace(/<br\/>/g,"<br>");
       } catch {
-        document.getElementById("meal").innerText = "급식 없음 😢";
+        document.getElementById("meal").innerText = "급식 없음";
       }
     });
 }
