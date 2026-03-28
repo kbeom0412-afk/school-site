@@ -110,7 +110,7 @@ function getMeal() {
 
   const date = `${y}${m}${d}`;
 
-  fetch(`https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${API_KEY}&Type=json&pIndex=1&pSize=10&ATPT_OFCDC_SC_CODE=G10&SD_SCHUL_CODE=9071093&MLSV_YMD=${date}`)
+  fetch(`https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${API_KEY}&Type=json&pIndex=1&pSize=10&ATPT_OFCDC_SC_CODE=S10&SD_SCHUL_CODE=9071093&MLSV_YMD=${date}`)
     .then(res => res.json())
     .then(data => {
       try {
