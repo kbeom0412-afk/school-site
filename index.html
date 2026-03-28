@@ -5,14 +5,57 @@
 <title>욕지중학교</title>
 
 <style>
-body { font-family: Arial; text-align: center; }
-.box { border:1px solid #ddd; margin:20px; padding:20px; border-radius:10px; }
+body {
+  margin:0;
+  font-family: Arial;
+  text-align:center;
+  background-color:#f5f5f5;
+}
+
+/* 🔥 상단 바 */
+.header {
+  background-color: skyblue;
+  color:white;
+  padding:30px;
+  font-size:30px;
+  font-weight:bold;
+}
+
+/* 내용 박스 */
+.box {
+  background:white;
+  border:1px solid #ddd;
+  margin:20px auto;
+  padding:20px;
+  border-radius:10px;
+  width:80%;
+  max-width:500px;
+}
+
+/* 버튼 */
+button {
+  margin:5px;
+  padding:10px 15px;
+  border:none;
+  background-color: skyblue;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  border-radius:5px;
+}
+
+button:hover {
+  background-color: deepskyblue;
+}
 </style>
 </head>
 
 <body>
 
-<h1>🏫 욕지중학교</h1>
+<!-- 🔥 상단 -->
+<div class="header">
+  🏫 욕지중학교
+</div>
 
 <div class="box">
   <h2>🍱 오늘 급식</h2>
@@ -21,13 +64,18 @@ body { font-family: Arial; text-align: center; }
 
 <div class="box">
   <h2>📚 시간표</h2>
-  <p>1교시 국어</p>
-  <p>2교시 수학</p>
-  <p>3교시 영어</p>
+
+  <button onclick="showGrade(1)">1학년</button>
+  <button onclick="showGrade(2)">2학년</button>
+  <button onclick="showGrade(3)">3학년</button>
+
+  <div id="timetable">
+    <p>학년을 선택하세요</p>
+  </div>
 </div>
 
 <script>
-const API_KEY = "98d97eced24247d1bbdbedde114d3df7"; // 
+const API_KEY = "98d97eced24247d1bbdbedde114d3df7";
 
 const today = new Date();
 const y = today.getFullYear();
@@ -46,6 +94,22 @@ fetch(`https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${API_KEY}&Type=json&
     document.getElementById("meal").innerText = "급식 없음";
   }
 });
+
+const schedules = {
+  1: ["국어", "수학", "영어", "과학", "체육"],
+  2: ["영어", "과학", "수학", "국어", "미술"],
+  3: ["수학", "국어", "사회", "영어", "기술"]
+};
+
+function showGrade(grade) {
+  let html = "";
+
+  schedules[grade].forEach((subject, index) => {
+    html += `<p>${index+1}교시 - ${subject}</p>`;
+  });
+
+  document.getElementById("timetable").innerHTML = html;
+}
 </script>
 
 </body>
