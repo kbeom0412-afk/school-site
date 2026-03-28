@@ -4,12 +4,16 @@
 <meta charset="UTF-8">
 <title>욕지중학교</title>
 
+<!-- 🔥 모바일 필수 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body {
   margin: 0;
   font-family: Arial;
 }
 
+/* 상단 */
 header {
   background: #2c3e50;
   color: white;
@@ -18,7 +22,7 @@ header {
   font-size: 28px;
 }
 
-/* 박스 공통 */
+/* 박스 */
 .box {
   width: 90%;
   margin: 20px auto;
@@ -27,7 +31,7 @@ header {
   border-radius: 10px;
 }
 
-/* 급식 날짜 */
+/* 날짜 */
 .date-nav {
   display: flex;
   justify-content: center;
@@ -47,6 +51,39 @@ button {
   padding: 10px;
   cursor: pointer;
 }
+
+/* 🔥 모바일 최적화 */
+@media (max-width: 600px) {
+
+  header {
+    font-size: 20px;
+    padding: 15px;
+  }
+
+  .box {
+    width: 95%;
+    padding: 15px;
+  }
+
+  button {
+    width: 100%;
+    margin: 5px 0;
+    font-size: 16px;
+  }
+
+  .arrow {
+    font-size: 20px;
+  }
+
+  #meal {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  #timetable {
+    font-size: 16px;
+  }
+}
 </style>
 </head>
 
@@ -54,7 +91,7 @@ button {
 
 <header>욕지중학교</header>
 
-<!--  급식 -->
+<!-- 🍱 급식 -->
 <div class="box">
   <h2>급식</h2>
 
@@ -67,7 +104,7 @@ button {
   <p id="meal">불러오는 중...</p>
 </div>
 
-<!--  시간표 -->
+<!-- 📚 시간표 -->
 <div class="box">
   <h2>시간표</h2>
 
@@ -79,12 +116,11 @@ button {
 </div>
 
 <script>
-const API_KEY = "3c229af746fa442eaf1240398ed7a9b5";
+const API_KEY = "여기에_너의_키";
 
-// 현재 날짜
+// 날짜
 let currentDate = new Date();
 
-// 날짜 표시
 function updateDateText() {
   const y = currentDate.getFullYear();
   const m = currentDate.getMonth() + 1;
@@ -96,13 +132,12 @@ function updateDateText() {
   getMeal();
 }
 
-// 날짜 변경
 function changeDate(num) {
   currentDate.setDate(currentDate.getDate() + num);
   updateDateText();
 }
 
-// 급식 가져오기
+// 급식
 function getMeal() {
   const y = currentDate.getFullYear();
   const m = String(currentDate.getMonth()+1).padStart(2,'0');
@@ -118,7 +153,7 @@ function getMeal() {
         document.getElementById("meal").innerHTML =
           meal.replace(/<br\/>/g,"<br>");
       } catch {
-        document.getElementById("meal").innerText = "급식 없음";
+        document.getElementById("meal").innerText = "급식 없음 😢";
       }
     });
 }
@@ -140,7 +175,6 @@ function showGrade(grade) {
   document.getElementById("timetable").innerHTML = html;
 }
 
-// 시작
 updateDateText();
 </script>
 
