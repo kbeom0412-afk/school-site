@@ -1,146 +1,52 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>우리학교</title>
+<meta charset="UTF-8">
+<title>욕지중학교</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background-color: white;
-    }
-
-    /* 헤더 */
-    header {
-      background-color: white;
-      padding: 15px;
-      border-bottom: 1px solid #ddd;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    /* 메뉴 */
-    nav {
-      background-color: skyblue;
-      padding: 10px;
-      text-align: center;
-    }
-
-    nav a {
-      color: white;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    /* 메인 영역 */
-    main {
-      display: flex;
-      justify-content: space-around;
-      padding: 20px;
-    }
-
-    /* 박스 */
-    .box {
-      width: 45%;
-      border: 1px solid #ddd;
-      padding: 15px;
-      border-radius: 10px;
-    }
-
-    h2 {
-      text-align: center;
-    }
-
-    /* 표 스타일 */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #f0f0f0;
-    }
-
-  </style>
+<style>
+body { font-family: Arial; text-align: center; }
+.box { border:1px solid #ddd; margin:20px; padding:20px; border-radius:10px; }
+</style>
 </head>
 
 <body>
 
-  <!-- 헤더 -->
-  <header>
-    <h1>욕지중학교</h1>
-  </header>
+<h1>🏫 욕지중학교</h1>
 
-  <!-- 메뉴 -->
-  <nav>
-    <a href="#">홈</a>
-    <a href="#">일정</a>
-    <a href="#">시간표</a>
-    <a href="#">급식</a>
-  </nav>
+<div class="box">
+  <h2>🍱 오늘 급식</h2>
+  <p id="meal">불러오는 중...</p>
+</div>
 
-  <!-- 메인 -->
-  <main>
+<div class="box">
+  <h2>📚 시간표</h2>
+  <p>1교시 국어</p>
+  <p>2교시 수학</p>
+  <p>3교시 영어</p>
+</div>
 
-    <!-- 시간표 -->
-    <div class="box">
-      <h2>시간표</h2>
-      <table>
-        <tr>
-          <th>교시</th>
-          <th>과목</th>
-        </tr>
-        <tr>
-          <td>1교시</td>
-          <td>미정</td>
-        </tr>
-        <tr>
-          <td>2교시</td>
-          <td>미정</td>
-        </tr>
-        <tr>
-          <td>3교시</td>
-          <td>미정</td>
-        </tr>
-      </table>
-    </div>
+<script>
+const API_KEY = "98d97eced24247d1bbdbedde114d3df7"; // 
 
-    <!-- 급식 -->
-    <div class="box">
-      <h2>급식표</h2>
-      <table>
-        <tr>
-          <th>날짜</th>
-          <th>메뉴</th>
-        </tr>
-        <tr>
-          <td>월요일</td>
-          <td>미정</td>
-        </tr>
-        <tr>
-          <td>화요일</td>
-          <td>미정</td>
-        </tr>
-        <tr>
-          <td>수요일</td>
-          <td>미정</td>
-        </tr>
-      </table>
-    </div>
+const today = new Date();
+const y = today.getFullYear();
+const m = String(today.getMonth()+1).padStart(2,'0');
+const d = String(today.getDate()).padStart(2,'0');
 
-  </main>
+const date = `${y}${m}${d}`;
+
+fetch(`https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${API_KEY}&Type=json&pIndex=1&pSize=10&ATPT_OFCDC_SC_CODE=G10&SD_SCHUL_CODE=9010438&MLSV_YMD=${date}`)
+.then(res => res.json())
+.then(data => {
+  try {
+    let meal = data.mealServiceDietInfo[1].row[0].DDISH_NM;
+    document.getElementById("meal").innerHTML = meal.replace(/<br\/>/g,"<br>");
+  } catch {
+    document.getElementById("meal").innerText = "급식 없음";
+  }
+});
+</script>
 
 </body>
 </html>
